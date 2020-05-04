@@ -1,0 +1,49 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+"The query type, represents all of the entry points into our object graph"
+type Query {
+  getUser(id: ID!): User
+  getBook(id: ID!): Book
+  getTag(title: String!): Tag
+}
+
+"The mutation type, represents all updates we can make to our data"
+type Mutation {
+  addBook(book: BookInput!): Book
+  updateBook(book: BookInput!): Book
+  deleteBook(userID: ID!, bookID: ID!): Boolean
+}
+
+"what is needed for a book"
+type Book {
+  id: ID
+  owner: User
+  name: String
+  tags: [Tag]
+}
+
+"Tag has everything needed for a tag"
+type Tag {
+  id: ID
+  title: String
+  books: [Book]
+}
+
+"what is needed for a user"
+type User {
+  id: ID
+  name: String
+  # user books exposed as a full list
+  books: [Book]
+  # user books exposed as a connection with edges
+}
+
+input BookInput {
+  id: ID
+  ownerID: ID!
+  name: String!
+  tagIDs: [Int]
+}
